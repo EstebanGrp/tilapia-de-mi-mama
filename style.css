@@ -1,0 +1,31 @@
+body {
+  background: linear-gradient(#0a3d62, #1e90ff);
+  color: white;
+  font-family: monospace;
+  text-align: center;
+  padding-top: 40px;
+}
+
+#tank {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #00ffff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 250px;
+  margin: auto;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 18px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  background: #00cec9;
+  color: black;
+}
+
+button:hover {
+  background: #55efc4;
+}

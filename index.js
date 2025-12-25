@@ -1,66 +1,78 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-// Usa la ruta directa dentro del repo
-const img = new Image();
-img.src = "spritesheet.png";
-
-let frame = 0;
-let food = 3;
-let temp = 1; // 0 frío, 1 normal, 2 caliente
-
 const info = document.getElementById("info");
 
-// Configs basadas en tu spritesheet
-const SPRITE_WIDTH = 64;
-const SPRITE_HEIGHT = 64;
-const TILAPIA_Y = 0; // fila 0: tilapias
-const THERMO_Y = 64; // fila 1: termómetro
-const THERMO_WIDTH = 32;
-const THERMO_HEIGHT = 96;
+// imágenes
+const sprites = new Image();
+sprites.src = "spritesheet.png";
+
+const aquarium = new Image();
+aquarium.src = "aquarium1.png";
+
+// configuración sprites
+const FISH_W = 64;
+const FISH_H = 64;
+const FRAMES = 3;
+
+// estado del juego
+let fish = [
+  { x: 60, y: 150, frame: 0 },
+  { x: 150, y: 120, frame: 1 },
+  { x: 240, y: 170, frame: 2 }
+];
+
+let food = 3;
+let temp = 1; // 0 frío | 1 ok | 2 caliente
 
 function feed() {
   food++;
 }
 
-function drawTilapia(x, y) {
-  // ciclo animación 0,1,2
+// dibuja peces
+function drawFish(f) {
   ctx.drawImage(
-    img,
-    frame * SPRITE_WIDTH, TILAPIA_Y,
-    SPRITE_WIDTH, SPRITE_HEIGHT,
-    x, y,
-    SPRITE_WIDTH, SPRITE_HEIGHT
+    sprites,
+    f.frame * FISH_W, 0,
+    FISH_W, FISH_H,
+    f.x, f.y,
+    FISH_W, FISH_H
   );
 }
 
+// termómetro
 function drawThermometer() {
-  // 3 marcos hacia abajo según temp
   ctx.drawImage(
-    img,
-    3 * SPRITE_WIDTH, THERMO_Y + temp * THERMO_HEIGHT,
-    THERMO_WIDTH, THERMO_HEIGHT,
-    420, 30,
-    THERMO_WIDTH, THERMO_HEIGHT
+    sprites,
+    3 * FISH_W, 64 + temp * 96,
+    32, 96,
+    440, 40,
+    32, 96
   );
 }
 
 function update() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // dibuja 1 tilapia de ejemplo
-  drawTilapia(100, 150);
+  // fondo (pecera)
+  ctx.drawImage(aquarium, 0, 0, canvas.width, canvas.height);
+
+  // peces
+  fish.forEach(f => {
+    drawFish(f);
+    f.frame = (f.frame + 1) % FRAMES;
+  });
 
   drawThermometer();
 
-  frame = (frame + 1) % 3; // 3 animaciones de tilapia
-
-  info.textContent = `🍞 Comida: ${food} | 🌡️ Temperatura: ${["Fría","OK","Caliente"][temp]}`;
+  info.textContent =
+    `🐟 Peces: ${fish.length} | 🍞 Comida: ${food} | 🌡️ ${["Fría","OK","Caliente"][temp]}`;
 }
 
-// cambia temp cada 5s
+// temperatura cambia sola
 setInterval(() => {
   temp = Math.floor(Math.random() * 3);
 }, 5000);
 
+// loop principal
 setInterval(update, 300);

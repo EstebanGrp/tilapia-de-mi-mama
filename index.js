@@ -3,76 +3,100 @@ const ctx = canvas.getContext("2d");
 
 const info = document.getElementById("info");
 
-// imágenes
+// ================= IMÁGENES =================
 const sprites = new Image();
 sprites.src = "spritesheet.png";
 
 const aquarium = new Image();
 aquarium.src = "aquarium1.png";
 
-// configuración sprites
-const FISH_W = 64;
-const FISH_H = 64;
+// ============ COORDENADAS REALES ============
+// Tilapia (según lo que enviaste)
+const FISH_X = 111;
+const FISH_Y = 143;
+const FISH_W = 528;
+const FISH_H = 228;
+
+// Cantidad de frames horizontales
 const FRAMES = 3;
 
-// estado del juego
+// Termómetro (ajustable si luego lo mueves)
+const THERMO_X = 0;
+const THERMO_Y = 371;
+const THERMO_W = 128;
+const THERMO_H = 256;
+
+// ============================================
+
+// Estado del juego
 let fish = [
-  { x: 60, y: 150, frame: 0 },
-  { x: 150, y: 120, frame: 1 },
-  { x: 240, y: 170, frame: 2 }
+  { x: 40,  y: 130, frame: 0 },
+  { x: 180, y: 150, frame: 1 },
+  { x: 320, y: 120, frame: 2 }
 ];
 
 let food = 3;
-let temp = 1; // 0 frío | 1 ok | 2 caliente
+let temp = 1; // 0 frío | 1 normal | 2 caliente
+
+// ================= FUNCIONES =================
 
 function feed() {
   food++;
 }
 
-// dibuja peces
 function drawFish(f) {
   ctx.drawImage(
     sprites,
-    f.frame * FISH_W, 0,
-    FISH_W, FISH_H,
-    f.x, f.y,
-    FISH_W, FISH_H
+    FISH_X + f.frame * FISH_W, // frame correcto
+    FISH_Y,
+    FISH_W,
+    FISH_H,
+    f.x,
+    f.y,
+    FISH_W,
+    FISH_H
   );
 }
 
-// termómetro
 function drawThermometer() {
   ctx.drawImage(
     sprites,
-    3 * FISH_W, 64 + temp * 96,
-    32, 96,
-    440, 40,
-    32, 96
+    THERMO_X,
+    THERMO_Y + temp * THERMO_H,
+    THERMO_W,
+    THERMO_H,
+    440,
+    30,
+    64,
+    128
   );
 }
+
+// ================= LOOP =================
 
 function update() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // fondo (pecera)
+  // Fondo
   ctx.drawImage(aquarium, 0, 0, canvas.width, canvas.height);
 
-  // peces
+  // Peces
   fish.forEach(f => {
     drawFish(f);
     f.frame = (f.frame + 1) % FRAMES;
   });
 
+  // Termómetro
   drawThermometer();
 
   info.textContent =
-    `🐟 Peces: ${fish.length} | 🍞 Comida: ${food} | 🌡️ ${["Fría","OK","Caliente"][temp]}`;
+    `🐟 Peces: ${fish.length} | 🍞 Comida: ${food} | 🌡️ ${["Fría", "Normal", "Caliente"][temp]}`;
 }
 
-// temperatura cambia sola
+// Temperatura cambia sola
 setInterval(() => {
   temp = Math.floor(Math.random() * 3);
 }, 5000);
 
-// loop principal
-setInterval(update, 300);
+// Loop principal
+setInterval(update, 260);

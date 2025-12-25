@@ -1,27 +1,36 @@
-let fish = 1;
+let fish = 0;
 let food = 0;
 
-const fishText = document.getElementById("fishCount");
-const foodText = document.getElementById("foodCount");
+const stats = document.getElementById("stats");
+const tank = document.getElementById("fishContainer");
 
-function updateUI() {
-  fishText.textContent = "Peces: " + fish;
-  foodText.textContent = "Comida: " + food;
+function updateStats() {
+  stats.textContent = `Peces: ${fish} | Comida: ${food}`;
 }
 
-function addFood() {
-  food++;
-  updateUI();
+function createFish() {
+  const f = document.createElement("div");
+  f.className = "fish";
+  f.textContent = Math.random() > 0.5 ? "🐟" : "🐠";
+  f.style.top = Math.random() * 200 + "px";
+  f.style.animationDuration = (4 + Math.random() * 4) + "s";
+  tank.appendChild(f);
 }
 
 function addFish() {
   if (food >= 2) {
     food -= 2;
     fish++;
+    createFish();
   } else {
-    alert("❌ No hay suficiente comida");
+    alert("❌ Necesitas 2 de comida");
   }
-  updateUI();
+  updateStats();
+}
+
+function addFood() {
+  food++;
+  updateStats();
 }
 
 // reproducción automática
@@ -29,8 +38,9 @@ setInterval(() => {
   if (fish >= 2 && food >= 1) {
     food--;
     fish++;
+    createFish();
   }
-  updateUI();
-}, 5000);
+  updateStats();
+}, 6000);
 
-updateUI();
+updateStats();

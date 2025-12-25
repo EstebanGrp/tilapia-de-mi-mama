@@ -2,24 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Mini Criadero de Peces</title>
+  <title>Mini Criadero de Tilapias</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>🐟 Mini Criadero de Peces</h1>
+<h1>🐟 Criadero de Tilapias</h1>
 
-  <div id="tank">
-    <div id="fishContainer"></div>
-  </div>
+<div id="game">
+  <canvas id="canvas" width="500" height="300"></canvas>
+</div>
 
-  <p id="stats">Peces: 0 | Comida: 0</p>
+<div class="ui">
+  <button onclick="feed()">🍞 Dar comida</button>
+  <span id="info"></span>
+</div>
 
-  <div class="buttons">
-    <button onclick="addFood()">🍞 Dar comida</button>
-    <button onclick="addFish()">🐠 Agregar pez</button>
-  </div>
-
-  <script src="index.js"></script>
+<script src="index.js"></script>
 </body>
 </html>
